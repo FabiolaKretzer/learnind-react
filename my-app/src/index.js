@@ -35,7 +35,7 @@ class Board extends React.Component {
                 counter++;
             }
             column.push(
-                <div className="board-row">
+                <div key={i} className="board-row">
                     {row}
                 </div>
             );
@@ -96,6 +96,23 @@ class Game extends React.Component {4
         });
     }
 
+    toggleSelect(option){
+        let step;
+        if (option === 'up'){
+            if(this.state.stepNumber === 0)
+                return
+            else
+                step = this.state.stepNumber - 1;
+
+        } else if(option === 'down'){
+            if(this.state.stepNumber === this.state.history.length - 1)
+                return
+            else
+                step = this.state.stepNumber + 1;
+        }
+        this.jumpTo(step);
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -129,11 +146,15 @@ class Game extends React.Component {4
                     squares={current.squares}
                     onClick={(i) => this.handleClick(i)}
                 />
-            </div>
+            </div>   
             <div className="game-info">
                 <div>{status}</div>
                 <ol>{moves}</ol>
             </div>
+            <div>
+                <button onClick={() => this.toggleSelect('up')}>&uarr;</button>
+                <button onClick={() => this.toggleSelect('down')}>&darr;</button>
+            </div> 
             </div>
         );
     }
